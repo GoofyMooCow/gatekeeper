@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTTP API · Gatekeeper Wiki</title>
+<meta name="description" content="Public and admin API for websites and bots">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<script>try{var t=localStorage.getItem("gk-theme");if(!t&&matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="http-api.html">
+<a class="skip" href="#content">Skip to content</a>
+<header id="site-header" class="site-header">
+<button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+<a class="brand" href="index.html"><img src="./assets/img/favicon.png"><span>Gatekeeper</span><small>Wiki</small></a>
+<div class="header-gap"></div>
+<div class="search" role="search"><input id="search" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off"><div class="results" id="results"></div></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span><span class="lbl-long">Screen </span>Configurator</span></a>
+<button class="btn ghost icon-btn" id="theme-btn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<aside id="sidebar" class="sidebar" aria-label="Wiki navigation"><h4>Getting started</h4><ul><li><a href="index.html">Home</a></li><li><a href="installation.html">Installation</a></li><li><a href="how-it-works.html">How it works</a></li></ul><h4>Administration</h4><ul><li><a href="commands.html">Commands</a></li><li><a href="statuses.html">Player statuses</a></li><li><a href="denial-screens.html">Denial screens</a></li><li><a href="player-profiles.html">Player profiles</a></li></ul><h4>Reference</h4><ul><li><a href="configuration.html">Configuration</a></li><li><a href="http-api.html" aria-current="page">HTTP API</a></li><li><a href="security.html">Security</a></li><li><a href="permissions.html">Permissions</a></li></ul><h4>Help</h4><ul><li><a href="faq.html">FAQ</a></li></ul><div class="side-cta">Building a denial screen? Design it visually, then paste the result into your config.<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a></div></aside>
+<article id="content" class="doc">
+<h1>HTTP API</h1>
+<p class="lede">Connect Gatekeeper to websites, Discord bots, dashboards, and other applications.</p>
+
+<h2 id="base-url">Base URL</h2>
+<p>By default the API runs at:</p>
+<pre><code>http://127.0.0.1:8123/api/v1</code></pre>
+
+<h2 id="public-and-admin-api">Public and admin API</h2>
+<table>
+<tr><th>API</th><th>What it can do</th></tr>
+<tr><td>Public</td><td>Provide player and status information, including public profile fields.</td></tr>
+<tr><td>Authenticated admin</td><td>Manage players, statuses, profile fields, logs, and configuration.</td></tr>
+</table>
+
+<h2 id="admin-token">Admin token</h2>
+<p>The admin API uses the token in <code>config/gatekeeper/config.json</code>, under:</p>
+<pre><code>api.adminApi.token</code></pre>
+<div class="callout danger"><p><strong>Keep this token private.</strong> It gives access to administrative functions.</p></div>
+
+<h2 id="things-to-build">Things to build</h2>
+<ul>
+<li>A public member list or player page on your website</li>
+<li>A Discord bot that approves applicants by changing their status</li>
+<li>A dashboard showing join and audit activity</li>
+</ul>
+<!-- TODO: add your endpoint reference here (paths, methods, auth header, example responses). -->
+
+<h2 id="exposing-the-api">Exposing the API</h2>
+<p>The API is bound to localhost by default. If you expose it outside your server, put it behind a TLS reverse proxy. See <a href="security.html">Security</a>.</p>
+<nav class="pager" aria-label="Previous and next pages"><a class="prev" href="configuration.html"><small>Previous</small><b>Configuration</b></a><a class="next" href="security.html"><small>Next</small><b>Security</b></a></nav>
+</article>
+<nav id="toc" class="toc" aria-label="On this page"><h4>On this page</h4><a href="#base-url">Base URL</a><a href="#public-and-admin-api">Public and admin API</a><a href="#admin-token">Admin token</a><a href="#things-to-build">Things to build</a><a href="#exposing-the-api">Exposing the API</a></nav>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works · Gatekeeper Wiki</title>
+<meta name="description" content="Player records, statuses, and access checks">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<script>try{var t=localStorage.getItem("gk-theme");if(!t&&matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="how-it-works.html">
+<a class="skip" href="#content">Skip to content</a>
+<header id="site-header" class="site-header">
+<button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+<a class="brand" href="index.html"><img src="./assets/img/favicon.png"><span>Gatekeeper</span><small>Wiki</small></a>
+<div class="header-gap"></div>
+<div class="search" role="search"><input id="search" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off"><div class="results" id="results"></div></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span><span class="lbl-long">Screen </span>Configurator</span></a>
+<button class="btn ghost icon-btn" id="theme-btn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<aside id="sidebar" class="sidebar" aria-label="Wiki navigation"><h4>Getting started</h4><ul><li><a href="index.html">Home</a></li><li><a href="installation.html">Installation</a></li><li><a href="how-it-works.html" aria-current="page">How it works</a></li></ul><h4>Administration</h4><ul><li><a href="commands.html">Commands</a></li><li><a href="statuses.html">Player statuses</a></li><li><a href="denial-screens.html">Denial screens</a></li><li><a href="player-profiles.html">Player profiles</a></li></ul><h4>Reference</h4><ul><li><a href="configuration.html">Configuration</a></li><li><a href="http-api.html">HTTP API</a></li><li><a href="security.html">Security</a></li><li><a href="permissions.html">Permissions</a></li></ul><h4>Help</h4><ul><li><a href="faq.html">FAQ</a></li></ul><div class="side-cta">Building a denial screen? Design it visually, then paste the result into your config.<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a></div></aside>
+<article id="content" class="doc">
+<h1>How it works</h1>
+<p class="lede">Every player who attempts to join gets a record. Their status decides whether they get in.</p>
+
+<h2 id="the-join-flow">The join flow</h2>
+<ol>
+<li>A player tries to connect, from Java or Bedrock.</li>
+<li>Gatekeeper finds their record, or creates one. New players normally start with the <span class="chip warn">neutral</span> status.</li>
+<li>Gatekeeper checks the status. If it allows joining, the player enters. If not, they see the denial screen for that status.</li>
+<li>The attempt is written to the join log.</li>
+</ol>
+
+<h2 id="changing-a-status">Changing a status</h2>
+<p>Changing someone's status takes effect immediately. If the new status doesn't allow joining, a player who is online is disconnected.</p>
+<pre><code>/gatekeeper status PlayerName banned "Reason"</code></pre>
+
+<h2 id="if-something-goes-wrong">If something goes wrong</h2>
+<p>Gatekeeper fails closed. If an access check hits an error, the player is denied instead of accidentally allowed in. See <a href="security.html">Security</a>.</p>
+
+<h2 id="what-gets-recorded">What gets recorded</h2>
+<table>
+<tr><th>Log</th><th>Contains</th><th>Command</th></tr>
+<tr><td>Join log</td><td>Join attempts</td><td><code>/gatekeeper joinlog</code></td></tr>
+<tr><td>Audit log</td><td>Administrative changes</td><td><code>/gatekeeper audit</code></td></tr>
+</table>
+<p>A player's record also holds their platform, join information, name history, and profile fields. View it with <code>/gatekeeper info PlayerName</code>.</p>
+<nav class="pager" aria-label="Previous and next pages"><a class="prev" href="installation.html"><small>Previous</small><b>Installation</b></a><a class="next" href="commands.html"><small>Next</small><b>Commands</b></a></nav>
+</article>
+<nav id="toc" class="toc" aria-label="On this page"><h4>On this page</h4><a href="#the-join-flow">The join flow</a><a href="#changing-a-status">Changing a status</a><a href="#if-something-goes-wrong">If something goes wrong</a><a href="#what-gets-recorded">What gets recorded</a></nav>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

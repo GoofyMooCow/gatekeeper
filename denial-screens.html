@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Denial screens · Gatekeeper Wiki</title>
+<meta name="description" content="Custom messages for players who can't join">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<script>try{var t=localStorage.getItem("gk-theme");if(!t&&matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="denial-screens.html">
+<a class="skip" href="#content">Skip to content</a>
+<header id="site-header" class="site-header">
+<button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+<a class="brand" href="index.html"><img src="./assets/img/favicon.png"><span>Gatekeeper</span><small>Wiki</small></a>
+<div class="header-gap"></div>
+<div class="search" role="search"><input id="search" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off"><div class="results" id="results"></div></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span><span class="lbl-long">Screen </span>Configurator</span></a>
+<button class="btn ghost icon-btn" id="theme-btn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<aside id="sidebar" class="sidebar" aria-label="Wiki navigation"><h4>Getting started</h4><ul><li><a href="index.html">Home</a></li><li><a href="installation.html">Installation</a></li><li><a href="how-it-works.html">How it works</a></li></ul><h4>Administration</h4><ul><li><a href="commands.html">Commands</a></li><li><a href="statuses.html">Player statuses</a></li><li><a href="denial-screens.html" aria-current="page">Denial screens</a></li><li><a href="player-profiles.html">Player profiles</a></li></ul><h4>Reference</h4><ul><li><a href="configuration.html">Configuration</a></li><li><a href="http-api.html">HTTP API</a></li><li><a href="security.html">Security</a></li><li><a href="permissions.html">Permissions</a></li></ul><h4>Help</h4><ul><li><a href="faq.html">FAQ</a></li></ul><div class="side-cta">Building a denial screen? Design it visually, then paste the result into your config.<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a></div></aside>
+<article id="content" class="doc">
+<h1>Denial screens</h1>
+<p class="lede">When a player can't join, show them a message that tells them why and what to do next.</p>
+
+<h2 id="what-you-can-customize">What you can customize</h2>
+<p>Gatekeeper supports fully customizable denial screens with colors, formatting, placeholders, and Bedrock-specific text. Each <a href="statuses.html">status</a> chooses which screen its players see.</p>
+
+<h2 id="use-the-screen-configurator">Use the Screen Configurator</h2>
+<div class="callout configurator">
+<div><p><strong>Gatekeeper Screen Configurator</strong></p>
+<p>You don't have to edit the screen config by hand. Build a screen visually, copy the generated configuration, and paste it into your config.</p></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a>
+</div>
+<ol>
+<li>Open the <a data-configurator href="#" target="_blank" rel="noopener">Gatekeeper Screen Configurator</a>.</li>
+<li>Create or edit a screen and preview how it looks.</li>
+<li>Copy the generated configuration.</li>
+<li>Paste it into your Gatekeeper messages configuration.</li>
+<li>Apply it without a restart:</li>
+</ol>
+<pre><code>/gatekeeper reload</code></pre>
+<!-- TODO: original description had the target file blank; messages.json assumed. Confirm. -->
+<p>Screens live in <code>config/gatekeeper/messages.json</code>. See <a href="configuration.html">Configuration</a>.</p>
+
+<h2 id="bedrock-players">Bedrock players</h2>
+<p>Bedrock clients can show different text than Java clients, so screens support Bedrock-specific text. Players on either edition see the right version.</p>
+
+<div class="callout tip"><p><strong>Tell people what to do next.</strong> A good denial screen answers two questions: why can't I join, and how do I fix it. For example, point neutral players to your application form or Discord.</p></div>
+<nav class="pager" aria-label="Previous and next pages"><a class="prev" href="statuses.html"><small>Previous</small><b>Player statuses</b></a><a class="next" href="player-profiles.html"><small>Next</small><b>Player profiles</b></a></nav>
+</article>
+<nav id="toc" class="toc" aria-label="On this page"><h4>On this page</h4><a href="#what-you-can-customize">What you can customize</a><a href="#use-the-screen-configurator">Use the Screen Configurator</a><a href="#bedrock-players">Bedrock players</a></nav>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

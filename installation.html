@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installation · Gatekeeper Wiki</title>
+<meta name="description" content="Install Gatekeeper and approve your first admin">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<script>try{var t=localStorage.getItem("gk-theme");if(!t&&matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="installation.html">
+<a class="skip" href="#content">Skip to content</a>
+<header id="site-header" class="site-header">
+<button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+<a class="brand" href="index.html"><img src="./assets/img/favicon.png"><span>Gatekeeper</span><small>Wiki</small></a>
+<div class="header-gap"></div>
+<div class="search" role="search"><input id="search" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off"><div class="results" id="results"></div></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span><span class="lbl-long">Screen </span>Configurator</span></a>
+<button class="btn ghost icon-btn" id="theme-btn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<aside id="sidebar" class="sidebar" aria-label="Wiki navigation"><h4>Getting started</h4><ul><li><a href="index.html">Home</a></li><li><a href="installation.html" aria-current="page">Installation</a></li><li><a href="how-it-works.html">How it works</a></li></ul><h4>Administration</h4><ul><li><a href="commands.html">Commands</a></li><li><a href="statuses.html">Player statuses</a></li><li><a href="denial-screens.html">Denial screens</a></li><li><a href="player-profiles.html">Player profiles</a></li></ul><h4>Reference</h4><ul><li><a href="configuration.html">Configuration</a></li><li><a href="http-api.html">HTTP API</a></li><li><a href="security.html">Security</a></li><li><a href="permissions.html">Permissions</a></li></ul><h4>Help</h4><ul><li><a href="faq.html">FAQ</a></li></ul><div class="side-cta">Building a denial screen? Design it visually, then paste the result into your config.<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a></div></aside>
+<article id="content" class="doc">
+<h1>Installation</h1>
+<p class="lede">Gatekeeper is a server-side Fabric mod. Players don't need to install anything.</p>
+
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>A Minecraft server running Fabric</li>
+<li>Fabric API</li>
+<li>Floodgate, if you want Bedrock players to join through Geyser</li>
+</ul>
+
+<h2 id="steps">Steps</h2>
+<ol>
+<li>Put the Gatekeeper JAR in your server's <code>mods</code> folder.</li>
+<li>Install Fabric API, and Floodgate if you want Bedrock support.</li>
+<!-- TODO: confirm the exact setting for step 3 (original description had this line blank). -->
+<li>Turn off the vanilla whitelist in <code>server.properties</code>. Gatekeeper doesn't use it.</li>
+<li>Start the server once so Gatekeeper can create its files.</li>
+<li>Configure Gatekeeper in <code>config/gatekeeper/</code>.</li>
+<li>Approve your first administrator.</li>
+</ol>
+
+<div class="callout warn">
+<p><strong>A new installation denies everyone.</strong></p>
+<p>Unless a <code>whitelist.json</code> already exists, in which case Gatekeeper imports it, no one can join until you approve them.</p>
+</div>
+
+<h2 id="approve-your-first-administrator">Approve your first administrator</h2>
+<p>The console can always run Gatekeeper commands, so approve yourself from there. If you've already tried to join, you have a record and can use the status command:</p>
+<pre><code>gatekeeper status YourName whitelisted</code></pre>
+<p>If you haven't joined yet, add yourself by UUID and username:</p>
+<pre><code>gatekeeper add &lt;uuid&gt; YourName whitelisted</code></pre>
+<p>To run commands in game, you also need OP level 3 or higher. See <a href="permissions.html">Permissions</a>.</p>
+
+<h2 id="bedrock-players">Bedrock players</h2>
+<p>Install Geyser and Floodgate as usual. Gatekeeper then handles Java and Bedrock players with the same statuses and denial screens, and you can add Bedrock-specific text to a screen. See <a href="denial-screens.html">Denial screens</a>.</p>
+
+<h2 id="after-installing">After installing</h2>
+<p>Once a player has a record, you can manage them with <code>/gatekeeper</code>, the <a href="http-api.html">HTTP API</a>, or the vanilla <code>/whitelist</code>, <code>/ban</code>, and <code>/pardon</code> commands.</p>
+<nav class="pager" aria-label="Previous and next pages"><a class="prev" href="index.html"><small>Previous</small><b>Home</b></a><a class="next" href="how-it-works.html"><small>Next</small><b>How it works</b></a></nav>
+</article>
+<nav id="toc" class="toc" aria-label="On this page"><h4>On this page</h4><a href="#requirements">Requirements</a><a href="#steps">Steps</a><a href="#approve-your-first-administrator">Approve your first administrator</a><a href="#bedrock-players">Bedrock players</a><a href="#after-installing">After installing</a></nav>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

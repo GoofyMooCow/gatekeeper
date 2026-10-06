@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ · Gatekeeper Wiki</title>
+<meta name="description" content="Common questions and quick answers">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<script>try{var t=localStorage.getItem("gk-theme");if(!t&&matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="faq.html">
+<a class="skip" href="#content">Skip to content</a>
+<header id="site-header" class="site-header">
+<button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+<a class="brand" href="index.html"><img src="./assets/img/favicon.png"><span>Gatekeeper</span><small>Wiki</small></a>
+<div class="header-gap"></div>
+<div class="search" role="search"><input id="search" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off"><div class="results" id="results"></div></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span><span class="lbl-long">Screen </span>Configurator</span></a>
+<button class="btn ghost icon-btn" id="theme-btn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<aside id="sidebar" class="sidebar" aria-label="Wiki navigation"><h4>Getting started</h4><ul><li><a href="index.html">Home</a></li><li><a href="installation.html">Installation</a></li><li><a href="how-it-works.html">How it works</a></li></ul><h4>Administration</h4><ul><li><a href="commands.html">Commands</a></li><li><a href="statuses.html">Player statuses</a></li><li><a href="denial-screens.html">Denial screens</a></li><li><a href="player-profiles.html">Player profiles</a></li></ul><h4>Reference</h4><ul><li><a href="configuration.html">Configuration</a></li><li><a href="http-api.html">HTTP API</a></li><li><a href="security.html">Security</a></li><li><a href="permissions.html">Permissions</a></li></ul><h4>Help</h4><ul><li><a href="faq.html" aria-current="page">FAQ</a></li></ul><div class="side-cta">Building a denial screen? Design it visually, then paste the result into your config.<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a></div></aside>
+<article id="content" class="doc">
+<h1>FAQ</h1>
+<p class="lede">Quick answers to common questions.</p>
+
+<h2 id="does-gatekeeper-use-the-vanilla-whitelist">Does Gatekeeper use the vanilla whitelist?</h2>
+<p>No. A fresh install denies everyone, unless a <code>whitelist.json</code> exists, in which case Gatekeeper imports it.</p>
+
+<h2 id="do-i-need-to-restart-after-changing-the-config">Do I need to restart after changing the config?</h2>
+<p>Usually not. Run <code>/gatekeeper reload</code>.</p>
+
+<h2 id="what-happens-to-a-player-who-is-online-when-i-ban-them">What happens to a player who is online when I ban them?</h2>
+<p>They're disconnected right away if their new status doesn't allow them to stay.</p>
+
+<h2 id="do-bedrock-players-work">Do Bedrock players work?</h2>
+<p>Yes, through Geyser/Floodgate. See <a href="installation.html">Installation</a>.</p>
+
+<h2 id="how-do-i-change-what-a-denied-player-sees">How do I change what a denied player sees?</h2>
+<p>Use the <a data-configurator href="#" target="_blank" rel="noopener">Screen Configurator</a>, then paste the result into your config and reload. Details are on <a href="denial-screens.html">Denial screens</a>.</p>
+
+<h2 id="who-can-run-commands">Who can run commands?</h2>
+<p>The console, and OP level 3 or higher in game.</p>
+
+<h2 id="is-it-safe-to-expose-the-api">Is it safe to expose the API?</h2>
+<p>Only behind a TLS reverse proxy, with your admin token kept private. See <a href="security.html">Security</a>.</p>
+
+<h2 id="what-if-an-access-check-errors">What if an access check errors?</h2>
+<p>The player is denied. Gatekeeper fails closed.</p>
+<nav class="pager" aria-label="Previous and next pages"><a class="prev" href="permissions.html"><small>Previous</small><b>Permissions</b></a></nav>
+</article>
+<nav id="toc" class="toc" aria-label="On this page"><h4>On this page</h4><a href="#does-gatekeeper-use-the-vanilla-whitelist">Does Gatekeeper use the vanilla whitelist?</a><a href="#do-i-need-to-restart-after-changing-the-config">Do I need to restart after changing the config?</a><a href="#what-happens-to-a-player-who-is-online-when-i-ban-them">What happens to a player who is online when I ban them?</a><a href="#do-bedrock-players-work">Do Bedrock players work?</a><a href="#how-do-i-change-what-a-denied-player-sees">How do I change what a denied player sees?</a><a href="#who-can-run-commands">Who can run commands?</a><a href="#is-it-safe-to-expose-the-api">Is it safe to expose the API?</a><a href="#what-if-an-access-check-errors">What if an access check errors?</a></nav>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

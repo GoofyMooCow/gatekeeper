@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Player profiles · Gatekeeper Wiki</title>
+<meta name="description" content="Store Discord, email, bio, and more">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<script>try{var t=localStorage.getItem("gk-theme");if(!t&&matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="player-profiles.html">
+<a class="skip" href="#content">Skip to content</a>
+<header id="site-header" class="site-header">
+<button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+<a class="brand" href="index.html"><img src="./assets/img/favicon.png"><span>Gatekeeper</span><small>Wiki</small></a>
+<div class="header-gap"></div>
+<div class="search" role="search"><input id="search" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off"><div class="results" id="results"></div></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span><span class="lbl-long">Screen </span>Configurator</span></a>
+<button class="btn ghost icon-btn" id="theme-btn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<aside id="sidebar" class="sidebar" aria-label="Wiki navigation"><h4>Getting started</h4><ul><li><a href="index.html">Home</a></li><li><a href="installation.html">Installation</a></li><li><a href="how-it-works.html">How it works</a></li></ul><h4>Administration</h4><ul><li><a href="commands.html">Commands</a></li><li><a href="statuses.html">Player statuses</a></li><li><a href="denial-screens.html">Denial screens</a></li><li><a href="player-profiles.html" aria-current="page">Player profiles</a></li></ul><h4>Reference</h4><ul><li><a href="configuration.html">Configuration</a></li><li><a href="http-api.html">HTTP API</a></li><li><a href="security.html">Security</a></li><li><a href="permissions.html">Permissions</a></li></ul><h4>Help</h4><ul><li><a href="faq.html">FAQ</a></li></ul><div class="side-cta">Building a denial screen? Design it visually, then paste the result into your config.<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a></div></aside>
+<article id="content" class="doc">
+<h1>Player profiles</h1>
+<p class="lede">Attach information to each player, and decide who gets to see it.</p>
+
+<h2 id="what-you-can-store">What you can store</h2>
+<p>Gatekeeper can store custom player information such as Discord username, email, phone, bio, applications, notes, or any other field you define.</p>
+
+<h2 id="public-and-private-fields">Public and private fields</h2>
+<p>Every field is either public or private.</p>
+<table>
+<tr><th>Visibility</th><th>Who can read it</th></tr>
+<tr><td>Public</td><td>Available through the public API, so you can show it on a website.</td></tr>
+<tr><td>Private</td><td>Only available through the authenticated admin API.</td></tr>
+</table>
+<p>Private fields are always left out of public API responses.</p>
+
+<h2 id="working-with-fields">Working with fields</h2>
+<pre><code>/gatekeeper fields list
+/gatekeeper set GoofyMooCow discord goofymoocow
+/gatekeeper clear GoofyMooCow discord
+/gatekeeper info GoofyMooCow</code></pre>
+<p>Fields are defined in <code>config/gatekeeper/fields.json</code>. Run <code>/gatekeeper reload</code> after changing it.</p>
+
+<div class="callout note"><p>Treat private fields like private data: emails and phone numbers should only ever be reachable with your admin token. See <a href="security.html">Security</a>.</p></div>
+<nav class="pager" aria-label="Previous and next pages"><a class="prev" href="denial-screens.html"><small>Previous</small><b>Denial screens</b></a><a class="next" href="configuration.html"><small>Next</small><b>Configuration</b></a></nav>
+</article>
+<nav id="toc" class="toc" aria-label="On this page"><h4>On this page</h4><a href="#what-you-can-store">What you can store</a><a href="#public-and-private-fields">Public and private fields</a><a href="#working-with-fields">Working with fields</a></nav>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

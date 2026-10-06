@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · Gatekeeper Wiki</title>
+<meta name="description" content="What Gatekeeper is and where to begin">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<script>try{var t=localStorage.getItem("gk-theme");if(!t&&matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="index.html">
+<a class="skip" href="#content">Skip to content</a>
+<header id="site-header" class="site-header">
+<button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+<a class="brand" href="index.html"><img src="./assets/img/favicon.png"><span>Gatekeeper</span><small>Wiki</small></a>
+<div class="header-gap"></div>
+<div class="search" role="search"><input id="search" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off"><div class="results" id="results"></div></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span><span class="lbl-long">Screen </span>Configurator</span></a>
+<button class="btn ghost icon-btn" id="theme-btn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<aside id="sidebar" class="sidebar" aria-label="Wiki navigation"><h4>Getting started</h4><ul><li><a href="index.html" aria-current="page">Home</a></li><li><a href="installation.html">Installation</a></li><li><a href="how-it-works.html">How it works</a></li></ul><h4>Administration</h4><ul><li><a href="commands.html">Commands</a></li><li><a href="statuses.html">Player statuses</a></li><li><a href="denial-screens.html">Denial screens</a></li><li><a href="player-profiles.html">Player profiles</a></li></ul><h4>Reference</h4><ul><li><a href="configuration.html">Configuration</a></li><li><a href="http-api.html">HTTP API</a></li><li><a href="security.html">Security</a></li><li><a href="permissions.html">Permissions</a></li></ul><h4>Help</h4><ul><li><a href="faq.html">FAQ</a></li></ul><div class="side-cta">Building a denial screen? Design it visually, then paste the result into your config.<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a></div></aside>
+<article id="content" class="doc">
+<div class="hero">
+<h1>Gatekeeper</h1>
+<p class="lede">A server-side Fabric mod that gives you complete control over who can access your Minecraft server.</p>
+<div class="row">
+<a class="btn" href="installation.html">Install Gatekeeper</a>
+<a class="btn ghost" data-configurator href="#" target="_blank" rel="noopener">Screen Configurator</a>
+</div>
+</div>
+
+<p>Unlike Minecraft's basic whitelist, Gatekeeper introduces flexible player statuses, custom denial screens, player profiles, detailed audit logging, and a powerful HTTP API for external integrations. It supports both Java Edition and Bedrock Edition players when used with Geyser/Floodgate.</p>
+
+<h2 id="why-gatekeeper">Why Gatekeeper?</h2>
+<p>Gatekeeper is a modern replacement for Minecraft's whitelist system. Instead of managing a simple list of allowed and denied players, you can build a complete onboarding and access-management workflow with custom statuses, profile fields, denial messages, and external integrations.</p>
+<p>Whether you're running a private server, a community server with applications, or a large network with custom tooling, Gatekeeper lets you manage player access your way.</p>
+
+<h2 id="features">Features</h2>
+<dl class="feature-grid">
+<div><dt>Flexible player statuses</dt><dd>Built-in <code>whitelisted</code>, <code>neutral</code>, and <code>banned</code>, plus your own custom statuses.</dd></div>
+<div><dt>Custom denial screens</dt><dd>Fully customizable messages for players who are denied access.</dd></div>
+<div><dt>Java &amp; Bedrock support</dt><dd>Seamless compatibility with Geyser/Floodgate.</dd></div>
+<div><dt>Player profiles</dt><dd>Store Discord usernames, email addresses, bios, applications, notes, and more.</dd></div>
+<div><dt>Public and private fields</dt><dd>Choose what is visible publicly and what stays admin-only.</dd></div>
+<div><dt>Join and audit logging</dt><dd>Record login attempts and administrative actions for moderation and accountability.</dd></div>
+<div><dt>HTTP API</dt><dd>Integrate with websites, Discord bots, dashboards, and custom applications.</dd></div>
+<div><dt>In-game administration</dt><dd>Manage players, statuses, and profiles directly from Minecraft.</dd></div>
+<div><dt>Hot-reload configuration</dt><dd>Apply most changes instantly with <code>/gatekeeper reload</code>.</dd></div>
+<div><dt>Fail-closed security</dt><dd>If an access check fails unexpectedly, players are denied rather than mistakenly let in.</dd></div>
+</dl>
+
+<h2 id="start-here">Start here</h2>
+<ul class="start-list">
+<li><a href="installation.html">Installation</a><span>Put the JAR in place and approve your first administrator.</span></li>
+<li><a href="how-it-works.html">How it works</a><span>Player records, statuses, and what happens on join.</span></li>
+<li><a href="commands.html">Commands</a><span>Everything you can do from the console or in game.</span></li>
+<li><a href="denial-screens.html">Denial screens</a><span>Design the message players see when they can't join.</span></li>
+<li><a href="http-api.html">HTTP API</a><span>Connect Gatekeeper to your website or Discord bot.</span></li>
+</ul>
+<nav class="pager" aria-label="Previous and next pages"><a class="next" href="installation.html"><small>Next</small><b>Installation</b></a></nav>
+</article>
+<nav id="toc" class="toc" aria-label="On this page"><h4>On this page</h4><a href="#why-gatekeeper">Why Gatekeeper?</a><a href="#features">Features</a><a href="#start-here">Start here</a></nav>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

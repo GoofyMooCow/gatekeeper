@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kick Screen Editor</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<style>
+:root{--bg:#f1f2ee;--pn:#fff;--ink:#1d2320;--mut:#6b736d;--ln:#d6dad2;--ac:#2f8f4e;--acx:#fff;--bad:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171a;--pn:#1d2226;--ink:#e6e9e4;--mut:#8d968f;--ln:#313a3f;--ac:#5fd484;--acx:#0b1a10;--bad:#ff7b6b}}
+:root[data-theme="dark"]{--bg:#14171a;--pn:#1d2226;--ink:#e6e9e4;--mut:#8d968f;--ln:#313a3f;--ac:#5fd484;--acx:#0b1a10;--bad:#ff7b6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Segoe UI",system-ui,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--ln);background:var(--pn);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+h1{font:700 17px "Courier New",monospace;margin:0 auto 0 0;letter-spacing:-.02em}
+main{display:grid;grid-template-columns:230px minmax(280px,1fr) minmax(320px,1.2fr);gap:12px;padding:12px;align-items:start}
+@media(max-width:980px){main{grid-template-columns:1fr}}
+section{background:var(--pn);border:1px solid var(--ln);border-radius:6px;padding:12px}
+h2{font-size:13px;margin:0 0 8px;font-weight:700}
+button,select,input,textarea{font:inherit;color:var(--ink)}
+button{background:var(--pn);border:1px solid var(--ln);border-radius:5px;padding:4px 9px;cursor:pointer}
+button:hover{border-color:var(--ac)}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+button.pri{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:600}
+button.sm{padding:1px 6px}button.danger.armed{background:var(--bad);color:#fff;border-color:var(--bad)}
+input[type=text],input[type=number],select,textarea{width:100%;background:var(--bg);border:1px solid var(--ln);border-radius:5px;padding:5px 8px}
+textarea{font:12px/1.4 "Courier New",monospace;min-height:260px;resize:vertical;white-space:pre}
+label{display:block;color:var(--mut);font-size:12px;margin:8px 0 2px}
+.row{display:flex;gap:6px;align-items:center}.row>input{flex:1}
+.wrap{display:flex;flex-wrap:wrap;gap:5px}
+.scr{display:flex;justify-content:space-between;width:100%;text-align:left;margin-bottom:4px}
+.scr.on{border-color:var(--ac);background:var(--ac);color:var(--acx);font-weight:600}
+.sw{width:22px;height:22px;padding:0;border-radius:3px;border:2px solid var(--ln)}
+.fmt{min-width:26px}
+.chip{font:11px "Courier New",monospace;padding:1px 6px}
+.ed{font-family:"Courier New",monospace}
+.lnrow{display:flex;gap:4px;margin-bottom:4px}.lnrow input{flex:1}
+.stage{background:#2b1d12 repeating-conic-gradient(#3a271a 0 25%,#2f2015 0 50%) 0 0/48px 48px;border-radius:6px;padding:28px 12px 22px;text-align:center;font:17px/1.35 "Courier New","Lucida Console",monospace;min-height:300px;overflow-x:auto;text-shadow:2px 2px 0 rgba(0,0,0,.55)}
+.stage .ln{white-space:pre-wrap;min-height:1.35em}.stage .t{font-size:1.25em}
+.mcb{display:inline-block;margin-top:26px;min-width:260px;padding:7px 16px;background:#6d6d6d;border:2px solid #000;box-shadow:inset 2px 2px 0 #a8a8a8,inset -2px -2px 0 #3c3c3c;color:#fff}
+.obf{font-family:monospace}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;color:var(--mut);font-size:12px}
+.bar label{margin:0;display:inline-flex;gap:4px;align-items:center}
+#status.err{color:var(--bad)}#status.ok{color:var(--ac)}
+#lint div{color:var(--bad);font-size:12px}
+details summary{cursor:pointer;font-weight:600;font-size:13px}
+.drop{outline:3px dashed var(--ac);outline-offset:-8px}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style></head><body>
+<header>
+<h1>Kick Screen Editor</h1>
+<button id="undo" title="Ctrl+Z">Undo</button><button id="redo" title="Ctrl+Y">Redo</button>
+<button id="paste">Paste JSON</button><button id="copy" class="pri">Copy JSON</button>
+<button id="copymin">Copy minified</button><button id="dl">Download</button>
+<button id="imp">Import file</button><input id="file" type="file" accept=".json,.txt,application/json" hidden>
+<button id="reset" class="danger">Reset</button>
+</header>
+<main>
+<div>
+<section><h2>Screens</h2><div id="list"></div>
+<label for="nn">New screen key</label>
+<div class="row"><input id="nn" type="text" placeholder="e.g. muted"><button id="add" class="pri">Add</button></div>
+<div class="row" style="margin-top:6px"><select id="tpl"><option value="blank">Blank</option><option value="copy">Copy of current</option><option value="preset">Generic deny preset</option></select></div>
+</section>
+<section style="margin-top:12px"><h2>Global settings</h2>
+<label for="g_dateFormat">dateFormat</label><input id="g_dateFormat" type="text" class="ed">
+<label for="g_timezone">timezone</label><input id="g_timezone" type="text" class="ed">
+<label for="g_noReasonText">noReasonText</label><input id="g_noReasonText" type="text" class="ed">
+</section>
+<section style="margin-top:12px"><h2>Find &amp; replace (all screens)</h2>
+<input id="fr_a" type="text" placeholder="find" class="ed"><div style="height:4px"></div>
+<input id="fr_b" type="text" placeholder="replace with" class="ed">
+<div class="row" style="margin-top:6px"><button id="fr_go">Replace all</button><span id="fr_n" style="color:var(--mut)"></span></div>
+</section>
+<section style="margin-top:12px"><details><summary>Preview sample values</summary><div id="samp"></div></details></section>
+</div>
+
+<div>
+<section><h2>Formatting</h2>
+<div class="wrap" id="pal"></div>
+<div class="wrap" id="fm" style="margin-top:6px"></div>
+<div class="row" style="margin-top:6px"><label style="margin:0">Hex</label><input id="hex" type="color" value="#ff8800" style="max-width:44px;padding:0;height:26px"><button id="hexb" class="sm">Insert &amp;#rrggbb</button></div>
+<div class="wrap" id="ph" style="margin-top:8px"></div>
+</section>
+<section style="margin-top:12px" id="editor"></section>
+</div>
+
+<div>
+<section><h2>Preview</h2>
+<div class="bar"><label><input type="checkbox" id="rawph"> show raw {placeholders}</label><label><input type="checkbox" id="obfon" checked> animate &amp;k</label><button id="theme" class="sm">Theme</button></div>
+<div class="stage" id="stage"></div>
+<div id="lint" style="margin-top:8px"></div>
+</section>
+<section style="margin-top:12px"><h2>JSON <span id="status" style="font-weight:400;font-size:12px;margin-left:6px"></span></h2>
+<textarea id="raw" spellcheck="false" aria-label="Raw JSON"></textarea>
+<div class="row" style="margin-top:6px;flex-wrap:wrap"><button id="fmt">Prettify</button><button id="plain">Copy preview as plain text</button><button id="legacy">Copy JSON with § codes</button></div>
+</section>
+</div>
+</main>
+<script>
+const DEF={"dateFormat":"yyyy-MM-dd HH:mm 'UTC'","timezone":"UTC","noReasonText":"No reason provided","screens":{"default":{"title":"&c&lAccess denied","lines":["&7You cannot join &f{server}&7 right now."],"footer":"&8{uuid}","spacing":1},"neutral":{"title":"&e&lNot approved yet","subtitle":"&7Hi &f{username}&7!","lines":["&7You are not on the approved list for &f{server}&7.","&7Ask a staff member to approve your account."],"footer":"&8Attempt #{attempts} - {uuid}","spacing":1},"banned":{"title":"&4&lYou are banned","subtitle":"&7Reason: &f{reason}","lines":["&7You are banned from &f{server}&7.","&7If you believe this is a mistake, contact the staff."],"footer":"&8Since {statusChangedAt}","spacing":1},"unknown":{"title":"&c&lAccess denied","lines":["&7Your account is in a state this server does not recognise.","&7Please contact the staff."],"footer":"&8{uuid}","spacing":1},"error":{"title":"&c&lTemporarily unavailable","lines":["&7The access system had a problem checking your account.","&7Please try again in a moment."],"spacing":1}}};
+const COL={0:'#000000',1:'#0000AA',2:'#00AA00',3:'#00AAAA',4:'#AA0000',5:'#AA00AA',6:'#FFAA00',7:'#AAAAAA',8:'#555555',9:'#5555FF',a:'#55FF55',b:'#55FFFF',c:'#FF5555',d:'#FF55FF',e:'#FFFF55',f:'#FFFFFF'};
+const NAMES={0:'Black',1:'Dark Blue',2:'Dark Green',3:'Dark Aqua',4:'Dark Red',5:'Dark Purple',6:'Gold',7:'Gray',8:'Dark Gray',9:'Blue',a:'Green',b:'Aqua',c:'Red',d:'Light Purple',e:'Yellow',f:'White'};
+const FMT=[['l','B','Bold'],['o','I','Italic'],['n','U','Underline'],['m','S','Strikethrough'],['k','?','Obfuscated'],['r','R','Reset']];
+const samp={server:'Minecraft Server',username:'Steve',uuid:'069a79f4-44e9-4726-a5be-fca90e38aaf5',reason:'Griefing spawn',attempts:'3',statusChangedAt:'2026-09-30 12:00 UTC'};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let cfg,cur,hist=[],fut=[],last=null,tm=null;
+try{const s=localStorage.getItem('mcscreens');cfg=s?JSON.parse(s):null}catch(e){}
+if(!cfg||typeof cfg!=='object')cfg=JSON.parse(JSON.stringify(DEF));
+cfg.screens=cfg.screens&&typeof cfg.screens==='object'?cfg.screens:{};
+cur=Object.keys(cfg.screens)[0]||null;hist=[JSON.stringify(cfg)];
+
+function mc(t){
+  if(!$('#rawph').checked)t=t.replace(/\{(\w+)\}/g,(m,k)=>k in samp?samp[k]:m);
+  let o='',st={},buf='';
+  const flush=()=>{if(!buf)return;let s='color:'+(st.c||'#fff')+';';if(st.l)s+='font-weight:700;';if(st.o)s+='font-style:italic;';
+    const d=[st.n&&'underline',st.m&&'line-through'].filter(Boolean).join(' ');if(d)s+='text-decoration:'+d+';';
+    o+=`<span style="${s}"${st.k?` class="obf" data-t="${esc(buf)}"`:''}>${esc(buf)}</span>`;buf=''};
+  for(let i=0;i<t.length;i++){const ch=t[i];
+    if((ch==='&'||ch==='§')&&i+1<t.length){
+      const m=t.slice(i+1).match(/^#([0-9a-fA-F]{6})/);
+      if(m){flush();st={c:'#'+m[1]};i+=7;continue}
+      const k=t[i+1].toLowerCase();
+      if(k in COL){flush();st={c:COL[k]};i++;continue}
+      if('lmnok'.includes(k)){flush();st[k]=1;i++;continue}
+      if(k==='r'){flush();st={};i++;continue}
+    }buf+=ch}
+  flush();return o}
+const plain=t=>t.replace(/\{(\w+)\}/g,(m,k)=>k in samp?samp[k]:m).replace(/[&§](#[0-9a-fA-F]{6}|[0-9a-fk-orA-FK-OR])/g,'');
+
+function commit(){clearTimeout(tm);const j=JSON.stringify(cfg);if(hist[hist.length-1]!==j){hist.push(j);fut=[];if(hist.length>100)hist.shift()}
+  try{localStorage.setItem('mcscreens',j)}catch(e){}}
+function later(){clearTimeout(tm);tm=setTimeout(commit,400)}
+function setCfg(c,keepRaw){cfg=c;if(!cfg.screens||typeof cfg.screens!=='object')cfg.screens={};if(!(cur in cfg.screens))cur=Object.keys(cfg.screens)[0]||null;commit();refresh(true,keepRaw)}
+function undo(){commit();if(hist.length>1){fut.push(hist.pop());cfg=JSON.parse(hist[hist.length-1]);fix()}}
+function redo(){if(fut.length){const j=fut.pop();hist.push(j);cfg=JSON.parse(j);fix()}}
+function fix(){if(!(cur in cfg.screens))cur=Object.keys(cfg.screens)[0]||null;try{localStorage.setItem('mcscreens',JSON.stringify(cfg))}catch(e){}refresh(true)}
+const S=()=>cur&&cfg.screens[cur];
+
+function renderList(){const l=$('#list');const ks=Object.keys(cfg.screens);
+  l.innerHTML=ks.length?ks.map(k=>`<button class="scr ${k===cur?'on':''}" data-k="${esc(k)}"><span>${esc(k)}</span></button>`).join(''):'<p style="color:var(--mut)">No screens yet. Add one below.</p>';
+  for(const k of ['dateFormat','timezone','noReasonText'])$('#g_'+k).value=cfg[k]??''}
+function renderEditor(){const e=$('#editor'),s=S();
+  if(!s){e.innerHTML='<h2>Editor</h2><p style="color:var(--mut)">Select or add a screen to edit it.</p>';return}
+  const lines=Array.isArray(s.lines)?s.lines:[];
+  e.innerHTML=`<h2>Editing “${esc(cur)}”</h2>
+  <div class="row"><input id="rn" type="text" value="${esc(cur)}" class="ed" aria-label="Screen key"><button id="rnb">Rename</button><button id="dup">Duplicate</button><button id="del" class="danger">Delete</button></div>
+  <label for="f_title">title</label><input id="f_title" data-f="title" type="text" class="ed" value="${esc(s.title??'')}">
+  <label for="f_subtitle">subtitle (optional)</label><input id="f_subtitle" data-f="subtitle" type="text" class="ed" value="${esc(s.subtitle??'')}">
+  <label>lines</label><div id="lns">${lines.map((x,i)=>`<div class="lnrow"><input data-l="${i}" type="text" class="ed" aria-label="Line ${i+1}" value="${esc(x)}"><button class="sm" data-a="up" data-i="${i}" title="Move up">↑</button><button class="sm" data-a="dn" data-i="${i}" title="Move down">↓</button><button class="sm" data-a="dl" data-i="${i}" title="Remove">✕</button></div>`).join('')}</div>
+  <div class="row"><button id="addl">Add line</button><button id="addbl" title="Adds an empty line">Add blank line</button></div>
+  <label for="f_footer">footer (optional)</label><input id="f_footer" data-f="footer" type="text" class="ed" value="${esc(s.footer??'')}">
+  <label for="f_spacing">spacing (blank lines between sections)</label><input id="f_spacing" data-f="spacing" type="number" min="0" max="10" value="${s.spacing??1}">`}
+function renderPreview(){const s=S(),st=$('#stage');if(!s){st.innerHTML='';return}
+  const L=[],ln=(t,c)=>L.push(`<div class="ln ${c||''}">${mc(String(t))||'&nbsp;'}</div>`);
+  const gap=()=>{for(let i=0;i<(+s.spacing||0);i++)ln('')};
+  if(s.title)ln(s.title,'t');if(s.subtitle)ln(s.subtitle);
+  const ls=Array.isArray(s.lines)?s.lines:[];
+  if((s.title||s.subtitle)&&ls.length)gap();ls.forEach(x=>ln(x));
+  if(s.footer){if(L.length)gap();ln(s.footer)}
+  st.innerHTML=L.join('')+'<div class="mcb">Back to Server List</div>'}
+function renderRaw(){const r=$('#raw');if(document.activeElement!==r)r.value=JSON.stringify(cfg,null,2);setStatus('','')}
+function lint(){const out=[],known=new Set(Object.keys(samp));
+  for(const[k,s]of Object.entries(cfg.screens)){if(!s||typeof s!=='object'){out.push(`“${k}” is not an object`);continue}
+    const txt=[s.title,s.subtitle,s.footer,...(Array.isArray(s.lines)?s.lines:[])].filter(x=>typeof x==='string').join('\n');
+    const bad=[...new Set([...txt.matchAll(/\{(\w+)\}/g)].map(m=>m[1]).filter(x=>!known.has(x)))];
+    if(bad.length)out.push(`“${k}” uses unknown placeholder: ${bad.map(b=>'{'+b+'}').join(', ')}`);
+    if(!s.title&&!(s.lines&&s.lines.length))out.push(`“${k}” has no title or lines`)}
+  if(!cfg.screens.default)out.push('No “default” screen. It is the usual fallback.');
+  $('#lint').innerHTML=out.map(x=>`<div>⚠ ${esc(x)}</div>`).join('')}
+function setStatus(m,c){const s=$('#status');s.textContent=m;s.className=c}
+function refresh(full,keepRaw){renderList();if(full)renderEditor();renderPreview();if(!keepRaw)renderRaw();lint()}
+
+/* editing */
+$('#editor').addEventListener('input',e=>{const t=e.target,s=S();if(!s)return;
+  if(t.dataset.f){const f=t.dataset.f;if(f==='spacing')s.spacing=Math.max(0,parseInt(t.value)||0);else if(t.value==='')delete s[f];else s[f]=t.value}
+  else if(t.dataset.l!==undefined)s.lines[+t.dataset.l]=t.value;
+  renderPreview();renderRaw();lint();later()});
+$('#editor').addEventListener('focusin',e=>{if(e.target.matches('input[type=text]')&&e.target.id!=='rn')last=e.target});
+$('#editor').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const s=S();
+  if(b.dataset.a){const i=+b.dataset.i,a=s.lines;if(b.dataset.a==='dl')a.splice(i,1);else{const j=b.dataset.a==='up'?i-1:i+1;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]]}commit();refresh(true)}
+  else if(b.id==='addl'||b.id==='addbl'){if(!Array.isArray(s.lines))s.lines=[];s.lines.push(b.id==='addl'?'&7':'');commit();refresh(true)}
+  else if(b.id==='rnb'){const n=$('#rn').value.trim();if(!n||n===cur||n in cfg.screens)return setStatus('Key is empty or already used','err');
+    cfg.screens=Object.fromEntries(Object.entries(cfg.screens).map(([k,v])=>[k===cur?n:k,v]));cur=n;commit();refresh(true)}
+  else if(b.id==='dup'){let n=cur+'_copy';while(n in cfg.screens)n+='_';cfg.screens[n]=JSON.parse(JSON.stringify(s));cur=n;commit();refresh(true)}
+  else if(b.id==='del'){if(!b.classList.contains('armed')){b.classList.add('armed');b.textContent='Click again to delete';setTimeout(()=>{b.classList.remove('armed');b.textContent='Delete'},2500);return}
+    delete cfg.screens[cur];cur=Object.keys(cfg.screens)[0]||null;commit();refresh(true)}});
+$('#list').addEventListener('click',e=>{const b=e.target.closest('button');if(b){cur=b.dataset.k;refresh(true)}});
+$('#add').onclick=()=>{const n=$('#nn').value.trim();if(!n||n in cfg.screens)return setStatus('Enter a unique key','err');
+  const t=$('#tpl').value;cfg.screens[n]=t==='copy'&&S()?JSON.parse(JSON.stringify(S())):t==='preset'?JSON.parse(JSON.stringify(DEF.screens.default)):{title:'&f&l'+n,lines:['&7Edit me.'],spacing:1};
+  cur=n;$('#nn').value='';commit();refresh(true)};
+$('#nn').addEventListener('keydown',e=>{if(e.key==='Enter')$('#add').click()});
+for(const k of ['dateFormat','timezone','noReasonText'])$('#g_'+k).addEventListener('input',e=>{cfg[k]=e.target.value;renderRaw();later()});
+
+/* toolbar */
+function ins(txt){let t=last;if(!t||!document.body.contains(t)){t=$('#f_title');if(!t)return}
+  const a=t.selectionStart??t.value.length,b=t.selectionEnd??a;t.setRangeText(txt,a,b,'end');t.focus();t.dispatchEvent(new Event('input',{bubbles:true}))}
+$('#pal').innerHTML=Object.keys(COL).map(k=>`<button class="sw" data-c="&${k}" style="background:${COL[k]}" title="&${k} ${NAMES[k]}" aria-label="${NAMES[k]}"></button>`).join('');
+$('#fm').innerHTML=FMT.map(([c,l,n])=>`<button class="fmt" data-c="&${c}" title="&${c} ${n}" style="${c==='l'?'font-weight:700':c==='o'?'font-style:italic':c==='n'?'text-decoration:underline':c==='m'?'text-decoration:line-through':''}">${l}</button>`).join('');
+$('#ph').innerHTML=Object.keys(samp).map(k=>`<button class="chip" data-c="{${k}}">{${k}}</button>`).join('');
+for(const id of ['#pal','#fm','#ph']){$(id).addEventListener('mousedown',e=>e.preventDefault());$(id).addEventListener('click',e=>{const b=e.target.closest('button');if(b)ins(b.dataset.c)})}
+$('#hexb').onclick=()=>ins('&'+$('#hex').value);
+$('#samp').innerHTML=Object.keys(samp).map(k=>`<label for="s_${k}">${k}</label><input id="s_${k}" data-s="${k}" type="text" class="ed" value="${esc(samp[k])}">`).join('');
+$('#samp').addEventListener('input',e=>{samp[e.target.dataset.s]=e.target.value;renderPreview()});
+$('#rawph').onchange=renderPreview;
+
+/* raw JSON, import/export */
+function applyText(t,keep){let o;try{o=JSON.parse(t)}catch(e){setStatus('Invalid JSON: '+e.message,'err');return false}
+  if(!o||typeof o!=='object'||Array.isArray(o)){setStatus('Top level must be an object','err');return false}
+  cfg=o;if(!cfg.screens||typeof cfg.screens!=='object'){cfg.screens={}}if(!(cur in cfg.screens))cur=Object.keys(cfg.screens)[0]||null;
+  commit();refresh(true,keep);setStatus('Loaded ✓','ok');return true}
+let rt;$('#raw').addEventListener('input',e=>{clearTimeout(rt);rt=setTimeout(()=>applyText(e.target.value,true),350)});
+$('#raw').addEventListener('blur',renderRaw);
+async function copy(t,msg){try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(_){}a.remove()}setStatus(msg||'Copied ✓','ok');setTimeout(()=>setStatus('',''),1800)}
+$('#copy').onclick=()=>copy(JSON.stringify(cfg,null,2));
+$('#copymin').onclick=()=>copy(JSON.stringify(cfg));
+$('#legacy').onclick=()=>copy(JSON.stringify(cfg,null,2).replace(/&(?=#[0-9a-fA-F]{6}|[0-9a-fk-orA-FK-OR])/g,'§'),'Copied with § ✓');
+$('#plain').onclick=()=>{const s=S();if(!s)return;const a=[s.title,s.subtitle,...(s.lines||[]),s.footer].filter(x=>x!==undefined).map(plain);copy(a.join('\n'),'Plain text copied ✓')};
+$('#paste').onclick=async()=>{try{const t=await navigator.clipboard.readText();applyText(t)}catch(e){setStatus('Clipboard blocked: click the JSON box and press Ctrl+V','err');$('#raw').focus()}};
+$('#fmt').onclick=()=>{$('#raw').value=JSON.stringify(cfg,null,2)};
+$('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'}));a.download='messages.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+$('#imp').onclick=()=>$('#file').click();
+const readF=f=>f&&f.text().then(t=>applyText(t));
+$('#file').onchange=e=>{readF(e.target.files[0]);e.target.value=''};
+addEventListener('dragover',e=>{e.preventDefault();document.body.classList.add('drop')});
+addEventListener('dragleave',e=>{if(!e.relatedTarget)document.body.classList.remove('drop')});
+addEventListener('drop',e=>{e.preventDefault();document.body.classList.remove('drop');readF(e.dataTransfer.files[0])});
+$('#reset').onclick=e=>{const b=e.target;if(!b.classList.contains('armed')){b.classList.add('armed');b.textContent='Click again to reset';setTimeout(()=>{b.classList.remove('armed');b.textContent='Reset'},2500);return}
+  b.classList.remove('armed');b.textContent='Reset';cur='default';setCfg(JSON.parse(JSON.stringify(DEF)))};
+$('#undo').onclick=undo;$('#redo').onclick=redo;
+addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&!e.target.matches('#raw')){const k=e.key.toLowerCase();if(k==='z'&&!e.shiftKey&&!e.target.matches('input')){e.preventDefault();undo()}else if((k==='y'||(k==='z'&&e.shiftKey))&&!e.target.matches('input')){e.preventDefault();redo()}}});
+$('#fr_go').onclick=()=>{const a=$('#fr_a').value,b=$('#fr_b').value;if(!a)return;let n=0;const r=x=>typeof x==='string'&&x.includes(a)?(n+=x.split(a).length-1,x.split(a).join(b)):x;
+  for(const s of Object.values(cfg.screens)){if(!s||typeof s!=='object')continue;for(const f of ['title','subtitle','footer'])s[f]=r(s[f]);for(const f of ['title','subtitle','footer'])if(s[f]===undefined)delete s[f];if(Array.isArray(s.lines))s.lines=s.lines.map(r)}
+  $('#fr_n').textContent=n+' replaced';commit();refresh(true)};
+$('#theme').onclick=()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'};
+const R='!#$%&*+?@ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+setInterval(()=>{if(!$('#obfon').checked)return;document.querySelectorAll('.obf').forEach(e=>{e.textContent=[...e.dataset.t].map(c=>c===' '?' ':R[Math.random()*R.length|0]).join('')})},90);
+refresh(true);
+</script></body></html>

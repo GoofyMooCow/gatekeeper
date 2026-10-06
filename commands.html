@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commands · Gatekeeper Wiki</title>
+<meta name="description" content="Every /gatekeeper command and vanilla replacement">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<script>try{var t=localStorage.getItem("gk-theme");if(!t&&matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="commands.html">
+<a class="skip" href="#content">Skip to content</a>
+<header id="site-header" class="site-header">
+<button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
+<a class="brand" href="index.html"><img src="./assets/img/favicon.png"><span>Gatekeeper</span><small>Wiki</small></a>
+<div class="header-gap"></div>
+<div class="search" role="search"><input id="search" type="search" placeholder="Search the wiki" aria-label="Search the wiki" autocomplete="off"><div class="results" id="results"></div></div>
+<a class="btn" data-configurator href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span><span class="lbl-long">Screen </span>Configurator</span></a>
+<button class="btn ghost icon-btn" id="theme-btn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<aside id="sidebar" class="sidebar" aria-label="Wiki navigation"><h4>Getting started</h4><ul><li><a href="index.html">Home</a></li><li><a href="installation.html">Installation</a></li><li><a href="how-it-works.html">How it works</a></li></ul><h4>Administration</h4><ul><li><a href="commands.html" aria-current="page">Commands</a></li><li><a href="statuses.html">Player statuses</a></li><li><a href="denial-screens.html">Denial screens</a></li><li><a href="player-profiles.html">Player profiles</a></li></ul><h4>Reference</h4><ul><li><a href="configuration.html">Configuration</a></li><li><a href="http-api.html">HTTP API</a></li><li><a href="security.html">Security</a></li><li><a href="permissions.html">Permissions</a></li></ul><h4>Help</h4><ul><li><a href="faq.html">FAQ</a></li></ul><div class="side-cta">Building a denial screen? Design it visually, then paste the result into your config.<a class="btn" data-configurator href="#" target="_blank" rel="noopener">Open the Configurator</a></div></aside>
+<article id="content" class="doc">
+<h1>Commands</h1>
+<p class="lede">Manage players, statuses, profiles, and logs from the console or in game.</p>
+<div class="callout note"><p>The console can always run these. In game, you need OP level 3 or higher. See <a href="permissions.html">Permissions</a>.</p></div>
+
+<h2 id="gatekeeper-commands">Gatekeeper commands</h2>
+<table>
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td><code>/gatekeeper status &lt;player&gt; &lt;status&gt; [reason]</code></td><td>Sets a player's status, with an optional reason.</td></tr>
+<tr><td><code>/gatekeeper add &lt;uuid&gt; &lt;username&gt; [status]</code></td><td>Creates a record for a player who hasn't joined yet.</td></tr>
+<tr><td><code>/gatekeeper info &lt;player&gt;</code></td><td>Shows status, platform, join information, name history, and profile fields.</td></tr>
+<tr><td><code>/gatekeeper delete &lt;player&gt;</code></td><td>Deletes a player's record.</td></tr>
+<tr><td><code>/gatekeeper list [query]</code></td><td>Lists players, optionally filtered by a search query.</td></tr>
+<tr><td><code>/gatekeeper set &lt;player&gt; &lt;field&gt; &lt;value&gt;</code></td><td>Sets a profile field.</td></tr>
+<tr><td><code>/gatekeeper clear &lt;player&gt; &lt;field&gt;</code></td><td>Clears a profile field.</td></tr>
+<tr><td><code>/gatekeeper fields list</code></td><td>Lists the available profile fields.</td></tr>
+<tr><td><code>/gatekeeper statuses</code></td><td>Lists the available statuses.</td></tr>
+<tr><td><code>/gatekeeper audit [player] [limit]</code></td><td>Shows the audit log of administrative changes.</td></tr>
+<tr><td><code>/gatekeeper joinlog [player] [limit]</code></td><td>Shows the log of join attempts.</td></tr>
+<tr><td><code>/gatekeeper reload</code></td><td>Applies configuration changes without a restart.</td></tr>
+</table>
+
+<h2 id="setting-a-status">Setting a status</h2>
+<pre><code>/gatekeeper status PlayerName whitelisted
+/gatekeeper status PlayerName neutral
+/gatekeeper status PlayerName banned "Reason"</code></pre>
+<p>See <a href="statuses.html">Player statuses</a> for what each one does.</p>
+
+<h2 id="vanilla-command-replacements">Vanilla command replacements</h2>
+<p>Gatekeeper also replaces these common commands. They change Gatekeeper statuses instead of Minecraft's vanilla whitelist.</p>
+<pre><code>/whitelist add &lt;player&gt;
+/whitelist remove &lt;player&gt;
+/whitelist list
+
+/ban &lt;player&gt; [reason]
+/pardon &lt;player&gt;</code></pre>
+
+<h2 id="player-information">Player information</h2>
+<pre><code>/gatekeeper info PlayerName</code></pre>
+<p>Use this to check a player's status, platform, join information, name history, and profile fields in one place.</p>
+<nav class="pager" aria-label="Previous and next pages"><a class="prev" href="how-it-works.html"><small>Previous</small><b>How it works</b></a><a class="next" href="statuses.html"><small>Next</small><b>Player statuses</b></a></nav>
+</article>
+<nav id="toc" class="toc" aria-label="On this page"><h4>On this page</h4><a href="#gatekeeper-commands">Gatekeeper commands</a><a href="#setting-a-status">Setting a status</a><a href="#vanilla-command-replacements">Vanilla command replacements</a><a href="#player-information">Player information</a></nav>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
